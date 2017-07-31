@@ -58,7 +58,7 @@ class CalendarMonth extends Component {
   }
 
   getWeekElements() {
-    const weekArray = this.props.utils.getWeekArray(this.props.displayDate, this.props.firstDayOfWeek);
+    const weekArray = this.props.utils.getWeekArray(this.props.displayDate, this.props.firstDayOfWeek, true);
 
     return weekArray.map((week, i) => {
       return (

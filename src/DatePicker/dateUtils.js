@@ -86,7 +86,7 @@ export function getFirstDayOfWeek() {
   return new Date(now.setDate(now.getDate() - now.getDay()));
 }
 
-export function getWeekArray(d, firstDayOfWeek) {
+export function getWeekArray(d, firstDayOfWeek, includeBoundaryDates) {
   const dayArray = [];
   const daysInMonth = getDaysInMonth(d);
   const weekArray = [];
@@ -98,18 +98,25 @@ export function getWeekArray(d, firstDayOfWeek) {
 
   const addWeek = (week) => {
     const emptyDays = 7 - week.length;
+
     for (let i = 0; i < emptyDays; ++i) {
-      week[weekArray.length ? 'push' : 'unshift'](null);
+      if (includeBoundaryDates) {
+        week[weekArray.length ? 'push' : 'unshift'](new Date());
+      } else {
+        week[weekArray.length ? 'push' : 'unshift'](null);
+      }
     }
     weekArray.push(week);
   };
 
   dayArray.forEach((day) => {
+    // If day is first day of the week, push to weekArray and prepare new week
     if (week.length > 0 && day.getDay() === firstDayOfWeek) {
       addWeek(week);
       week = [];
     }
     week.push(day);
+    // When you've reached the last day of the week, add it to the week collection
     if (dayArray.indexOf(day) === dayArray.length - 1) {
       addWeek(week);
     }
